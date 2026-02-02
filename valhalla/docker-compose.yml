@@ -1,0 +1,27 @@
+services:
+  valhalla-build:
+    image: ghcr.io/valhalla/valhalla:latest
+    container_name: valhalla-build
+    volumes:
+      - .:/data  # Mount thư mục hiện tại (proxy/) vào /data
+    command: >
+      sh -c "
+      valhalla_build_tiles -c /data/data/config.json /data/data/osm/HCM.osm.pbf &&
+      valhalla_build_admins -c /data/data/config.json /data/data/osm/HCM.osm.pbf &&
+      valhalla_build_timezones -c /data/data/config.json
+      "
+    restart: "no"
+
+  valhalla:
+    image: ghcr.io/valhalla/valhalla:latest
+    container_name: valhalla
+    ports:
+      - "8002:8002"
+    volumes:
+      - .:/data  
+    command: >
+      valhalla_service /data/data/config.json
+    depends_on:
+      valhalla-build:
+        condition: service_completed_successfully
+    restart: unless-stopped
