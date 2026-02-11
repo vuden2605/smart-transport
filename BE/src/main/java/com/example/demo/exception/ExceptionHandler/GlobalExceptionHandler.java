@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 		DomainCode domainCode = DomainCode.INTERNAL_SERVER_ERROR;
 		ApiResponse<?> response = ApiResponse.builder()
 				.code(domainCode.getCode())
-				.message(domainCode.getMessage())
+				.message(ex.getMessage())
 				.build();
 		return ResponseEntity.status(domainCode.getHttpStatus()).body(response);
 	}

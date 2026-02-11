@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users")
 public class UserController {
 	private final IUserService userService;
-	@PostMapping
+	@PostMapping("/internal")
 	public ApiResponse<UserResponse> createUser(@RequestBody UserCreationRequest request) {
 		UserResponse userResponse = userService.createUser(request);
 		return ApiResponse.<UserResponse>builder()
