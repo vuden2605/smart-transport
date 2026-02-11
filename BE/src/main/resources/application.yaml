@@ -49,3 +49,30 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+jwt:
+  secret: your_jwt_secret_key_smart_transport_demo
+  access-time: 3600000  # 1 hour in milliseconds
+  refresh-time: 86400000  # 24 hours in milliseconds
+app:
+  frontend-url:
+    urls:
+      - "http://localhost:3000"
+      - "http://localhost:5173"
+      - "http://localhost:5174"
+      - "*"
+  password-default: 123456
+  authenticate-ignored:
+    methods:
+      get:
+        - "/swagger-ui/**"
+        - "/swagger-ui.html"
+        - "/v3/api-docs/**"
+        - "/v3/api-docs"
+        - "/swagger-resources/**"
+      post:
+        - "/api/v1/auth/**"
+        - "/api/v1/users/**"
+cache:
+  expires:
+    "[user.details]": 1m
+    "[auth.invalidatedTokens]": 24h

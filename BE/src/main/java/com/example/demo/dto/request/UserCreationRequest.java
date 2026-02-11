@@ -4,9 +4,13 @@ import com.example.demo.config.Constants;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserCreationRequest {
 	@NotBlank(message = "EMPTY_INPUT")
 	private String name;

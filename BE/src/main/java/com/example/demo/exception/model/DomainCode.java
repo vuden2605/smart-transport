@@ -9,7 +9,12 @@ import org.springframework.http.HttpStatusCode;
 public enum DomainCode {
 	SUCCESS("Success", 9999, HttpStatus.OK),
 	INTERNAL_SERVER_ERROR("Internal server error", 1000, HttpStatus.INTERNAL_SERVER_ERROR),
-	USER_NOT_FOUND("User not found", 1001, HttpStatus.NOT_FOUND);
+	USER_NOT_FOUND("User not found", 1001, HttpStatus.NOT_FOUND),
+	INVALID_CREDENTIALS("Invalid credentials", 1002, HttpStatus.UNAUTHORIZED),
+	UNAUTHORIZED("Unauthorized access", 1003, HttpStatus.FORBIDDEN),
+	EMAIL_ALREADY_REGISTERED("Email already registered", 1004, HttpStatus.CONFLICT),
+	EMPTY_INPUT("Input cannot be empty", 1005, HttpStatus.BAD_REQUEST),
+	TOKEN_EXPIRED("Token has expired", 1006, HttpStatus.UNAUTHORIZED);
 	private final String message;
 	private final int code;
 	private final HttpStatusCode httpStatus;
