@@ -1,4 +1,4 @@
-package com.example.demo.service.user.Impl;
+package com.example.demo.service.user.impl;
 
 import com.example.demo.dto.request.UserCreationRequest;
 import com.example.demo.dto.response.UserResponse;
