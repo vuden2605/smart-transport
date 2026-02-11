@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LocationIQResponse {
+public class GeoCodingResponse {
 	private String lat;
 
 	private String lon;

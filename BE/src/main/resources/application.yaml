@@ -76,6 +76,7 @@ cache:
   expires:
     "[user.details]": 1m
     "[auth.invalidatedTokens]": 24h
+    "[locationCache]": 24h
 
 
 feign:

@@ -2,10 +2,12 @@ package com.example.demo.service.geocoding.provider;
 
 import com.example.demo.config.geocoding.LocationIQProperties;
 import com.example.demo.connector.LocationIQClient;
-import com.example.demo.connector.model.LocationIQResponse;
+import com.example.demo.connector.model.GeoCodingResponse;
 import com.example.demo.enums.GeoCodingProviderType;
+import com.example.demo.exception.AddressNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +24,9 @@ public class LocationIQProvider implements IGeoCodingProvider {
 	}
 
 	@Override
-	public LocationIQResponse forward(String address) {
-		List<LocationIQResponse> responses =
+	@Cacheable(value = "locationCache", key = "#address", unless = "#result == null")
+	public GeoCodingResponse forward(String address) {
+		List<GeoCodingResponse> responses =
 				locationIQClient.forwardGeocoding(
 						properties.getApiKey(),
 						address,
@@ -31,19 +34,25 @@ public class LocationIQProvider implements IGeoCodingProvider {
 				);
 
 		if (responses.isEmpty()) {
-			throw new RuntimeException("Address not found");
+			throw new AddressNotFoundException();
 		}
 
 		return responses.getFirst();
 	}
 
 	@Override
-	public LocationIQResponse reverse(double lat, double lon) {
-		return locationIQClient.reverseGeocoding(
+	@Cacheable(value = "locationCache", key = "#lat + ',' + #lon", unless = "#result == null")
+	public GeoCodingResponse reverse(double lat, double lon) {
+		GeoCodingResponse response = locationIQClient.reverseGeocoding(
 				properties.getApiKey(),
 				lat,
 				lon,
 				"json"
 		);
+
+		if (response == null) {
+			throw new AddressNotFoundException();
+		}
+		return response;
 	}
 }

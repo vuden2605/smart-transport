@@ -15,7 +15,8 @@ public enum DomainCode {
 	EMAIL_ALREADY_REGISTERED("Email already registered", 1004, HttpStatus.CONFLICT),
 	EMPTY_INPUT("Input cannot be empty", 1005, HttpStatus.BAD_REQUEST),
 	TOKEN_EXPIRED("Token has expired", 1006, HttpStatus.UNAUTHORIZED),
-	PROVIDER_NOT_FOUND("Geocoding provider not found", 2001, HttpStatus.BAD_REQUEST);
+	PROVIDER_NOT_FOUND("Geocoding provider not found", 2001, HttpStatus.BAD_REQUEST),
+	ADDRESS_NOT_FOUND("Address not found", 2002, HttpStatus.NOT_FOUND);
 	private final String message;
 	private final int code;
 	private final HttpStatusCode httpStatus;

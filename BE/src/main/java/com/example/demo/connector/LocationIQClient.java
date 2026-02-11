@@ -1,6 +1,6 @@
 package com.example.demo.connector;
 
-import com.example.demo.connector.model.LocationIQResponse;
+import com.example.demo.connector.model.GeoCodingResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,13 +13,13 @@ import java.util.List;
 )
 public interface LocationIQClient {
 	@GetMapping("/search.php")
-	List<LocationIQResponse> forwardGeocoding(
+	List<GeoCodingResponse> forwardGeocoding(
 			@RequestParam("key") String apiKey,
 			@RequestParam("q") String address,
 			@RequestParam("format") String format
 	);
 	@GetMapping("/reverse.php")
-	LocationIQResponse reverseGeocoding(
+	GeoCodingResponse reverseGeocoding(
 			@RequestParam("key") String apiKey,
 			@RequestParam("lat") double lat,
 			@RequestParam("lon") double lon,
