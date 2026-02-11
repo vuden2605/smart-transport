@@ -1,4 +1,4 @@
-package com.example.demo.service.authentication.Impl;
+package com.example.demo.service.authentication.impl;
 
 import com.example.demo.dto.request.AuthenticationRequest;
 import com.example.demo.dto.request.LogoutRequest;
