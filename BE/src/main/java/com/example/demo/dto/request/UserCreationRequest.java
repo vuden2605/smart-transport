@@ -16,7 +16,7 @@ public class UserCreationRequest {
 	private String name;
 
 	@NotBlank(message = "EMPTY_INPUT")
-	//@Pattern(regexp = Constants.EMAIL_PATTERN, message = "INVALID_EMAIL")
+	@Pattern(regexp = Constants.EMAIL_PATTERN, message = "INVALID_EMAIL")
 	private String email;
 
 	@NotBlank(message = "EMPTY_INPUT")

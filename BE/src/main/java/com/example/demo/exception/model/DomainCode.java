@@ -14,7 +14,13 @@ public enum DomainCode {
 	UNAUTHORIZED("Unauthorized access", 1003, HttpStatus.FORBIDDEN),
 	EMAIL_ALREADY_REGISTERED("Email already registered", 1004, HttpStatus.CONFLICT),
 	EMPTY_INPUT("Input cannot be empty", 1005, HttpStatus.BAD_REQUEST),
-	TOKEN_EXPIRED("Token has expired", 1006, HttpStatus.UNAUTHORIZED);
+	EMAIL_ERROR("Email service error", 1010, HttpStatus.SERVICE_UNAVAILABLE),
+	TOKEN_EXPIRED("Token has expired", 1006, HttpStatus.UNAUTHORIZED),
+	INVALID_OTP("Invalid OTP", 1007, HttpStatus.BAD_REQUEST),
+	OTP_EXPIRED("OTP has expired", 1008, HttpStatus.BAD_REQUEST),
+	USER_ALREADY_VERIFIED("User already verified", 1009, HttpStatus.BAD_REQUEST),
+	USER_NOT_VERIFIED("User not verified", 1011, HttpStatus.FORBIDDEN),
+	INVALID_INPUT("Invalid input", 1012, HttpStatus.BAD_REQUEST);
 	private final String message;
 	private final int code;
 	private final HttpStatusCode httpStatus;
