@@ -16,6 +16,12 @@ public enum DomainCode {
 	EMPTY_INPUT("Input cannot be empty", 1005, HttpStatus.BAD_REQUEST),
 	TOKEN_EXPIRED("Token has expired", 1006, HttpStatus.UNAUTHORIZED),
 	PROVIDER_NOT_FOUND("Geocoding provider not found", 2001, HttpStatus.BAD_REQUEST),
+	INVALID_OTP("Invalid OTP", 1007, HttpStatus.BAD_REQUEST),
+	OTP_EXPIRED("OTP has expired", 1008, HttpStatus.BAD_REQUEST),
+	USER_ALREADY_VERIFIED("User already verified", 1009, HttpStatus.BAD_REQUEST),
+	EMAIL_ERROR("Email service error", 1010, HttpStatus.SERVICE_UNAVAILABLE),
+	USER_NOT_VERIFIED("User not verified", 1011, HttpStatus.FORBIDDEN),
+	INVALID_INPUT("Invalid input", 1012, HttpStatus.BAD_REQUEST),
 	ADDRESS_NOT_FOUND("Address not found", 2002, HttpStatus.NOT_FOUND);
 	private final String message;
 	private final int code;

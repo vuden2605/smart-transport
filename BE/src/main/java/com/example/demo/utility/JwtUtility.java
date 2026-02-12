@@ -1,6 +1,7 @@
-package com.example.demo.service.authentication;
+package com.example.demo.utility;
 
 import com.example.demo.entity.User;
+import com.example.demo.service.authentication.TokenCacheService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class JwtService {
+public class JwtUtility {
 
 	@Value("${jwt.secret}")
 	private String secretKey;

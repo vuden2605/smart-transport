@@ -2,11 +2,15 @@ package com.example.demo.entity;
 
 import io.lettuce.core.dynamic.annotation.CommandNaming;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,5 +20,6 @@ public class User {
 	private String phone;
 	private String password;
 	private String avatarUrl;
-	private Boolean isVerified;
+	@Builder.Default
+	private Boolean isVerified = false;
 }

@@ -76,14 +76,3 @@ cache:
   expires:
     "[user.details]": 1m
     "[auth.invalidatedTokens]": 24h
-    "[locationCache]": 24h
-
-
-feign:
-  client:
-    config:
-      location-iq:
-        connectTimeout: 3000
-        readTimeout: 5000
-        baseUrl: https://us1.locationiq.com/v1/
-        apiKey: pk.d125c8c0f77b61399a16051c2ad55146

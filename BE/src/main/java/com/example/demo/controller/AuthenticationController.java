@@ -6,6 +6,7 @@ import com.example.demo.dto.request.RefreshTokenRequest;
 import com.example.demo.dto.response.ApiResponse;
 import com.example.demo.dto.response.AuthenticationResponse;
 import com.example.demo.service.authentication.IAuthenticationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,21 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 	private final IAuthenticationService authenticationService;
 	@PostMapping
-	public ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+	public ApiResponse<AuthenticationResponse> authenticate(@RequestBody @Valid AuthenticationRequest request) {
 		return ApiResponse.<AuthenticationResponse>builder()
 				.message("Authentication successful")
 				.data(authenticationService.authenticate(request))
 				.build();
 	}
 	@PostMapping("/refresh-token")
-	public ApiResponse<AuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
+	public ApiResponse<AuthenticationResponse> refreshToken(@RequestBody @Valid RefreshTokenRequest request) {
 		return ApiResponse.<AuthenticationResponse>builder()
 				.message("Token refreshed successfully")
 				.data(authenticationService.refreshToken(request))
 				.build();
 	}
 	@PostMapping("/logout")
-	public ApiResponse<Void> logout(@RequestBody LogoutRequest request) {
+	public ApiResponse<Void> logout(@RequestBody @Valid LogoutRequest request) {
 		authenticationService.logout(request);
 		return ApiResponse.<Void>builder()
 				.message("Logout successful")

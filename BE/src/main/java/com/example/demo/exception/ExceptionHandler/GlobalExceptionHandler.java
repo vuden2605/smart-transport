@@ -4,6 +4,7 @@ import com.example.demo.dto.response.ApiResponse;
 import com.example.demo.exception.AppException;
 import com.example.demo.exception.model.DomainCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -24,6 +25,22 @@ public class GlobalExceptionHandler {
 		ApiResponse<?> response = ApiResponse.builder()
 				.code(domainCode.getCode())
 				.message(domainCode.getMessage())
+				.build();
+		return ResponseEntity.status(domainCode.getHttpStatus()).body(response);
+	}
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ApiResponse<?>> handleValidationException(MethodArgumentNotValidException ex) {
+		DomainCode domainCode = null;
+		String errorMessage = ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
+		try {
+			domainCode = DomainCode.valueOf(errorMessage);
+		}
+		catch(IllegalArgumentException e) {
+			domainCode = DomainCode.INVALID_INPUT;
+		}
+		ApiResponse<?> response = ApiResponse.builder()
+				.code(domainCode.getCode())
+				.message(errorMessage)
 				.build();
 		return ResponseEntity.status(domainCode.getHttpStatus()).body(response);
 	}

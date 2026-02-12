@@ -7,9 +7,10 @@ import com.example.demo.dto.response.AuthenticationResponse;
 import com.example.demo.entity.User;
 import com.example.demo.exception.InvalidCredentialException;
 import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.exception.UserNotVerifiedException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.authentication.IAuthenticationService;
-import com.example.demo.service.authentication.JwtService;
+import com.example.demo.utility.JwtUtility;
 import com.example.demo.service.authentication.TokenCacheService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -17,6 +18,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,19 +29,26 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 	UserRepository userRepository;
 
-	JwtService jwtService;
+	JwtUtility jwtUtility;
 
 	TokenCacheService tokenCacheService;
+
+	PasswordEncoder passwordEncoder;
 
 	@Override
 	public AuthenticationResponse authenticate(AuthenticationRequest request) {
 		User user = userRepository.findByEmail(request.getEmail())
 				.orElseThrow(UserNotFoundException::new);
-		if (!user.getPassword().equals(request.getPassword())) {
+		if (!user.getIsVerified()) {
+			throw new UserNotVerifiedException();
+		}
+
+		if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
 			throw new InvalidCredentialException();
 		}
-		String accessToken = jwtService.generateAccessToken(user);
-		String refreshToken = jwtService.generateRefreshToken(user);
+
+		String accessToken = jwtUtility.generateAccessToken(user);
+		String refreshToken = jwtUtility.generateRefreshToken(user);
 		return AuthenticationResponse.builder()
 				.accessToken(accessToken)
 				.refreshToken(refreshToken)
@@ -51,7 +60,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 		String refreshToken = request.getRefreshToken();
 
-		Claims claims = jwtService.verifyToken(refreshToken);
+		Claims claims = jwtUtility.verifyToken(refreshToken);
 		if(!"refresh_token".equals(claims.get("type", String.class))) {
 			throw new JwtException("Invalid token type");
 		}
@@ -62,13 +71,13 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 		User user = userRepository.findById(userId)
 				.orElseThrow(UserNotFoundException::new);
 
-		String newAccessToken = jwtService.generateAccessToken(user);
-		String newRefreshToken = jwtService.generateRefreshToken(user);
+		String newAccessToken = jwtUtility.generateAccessToken(user);
+		String newRefreshToken = jwtUtility.generateRefreshToken(user);
 
 		tokenCacheService.invalidateTokens(
 				acId,
 				refreshTokenId,
-				jwtService.authCacheTime(claims));
+				jwtUtility.authCacheTime(claims));
 		return AuthenticationResponse.builder()
 				.accessToken(newAccessToken)
 				.refreshToken(newRefreshToken)
@@ -77,14 +86,14 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 	public void logout(LogoutRequest request) {
 		String accessToken = request.getAccessToken();
-		Claims accessClaims = jwtService.verifyToken(accessToken);
+		Claims accessClaims = jwtUtility.verifyToken(accessToken);
 		String acId = accessClaims.getId();
 		String rfId = accessClaims.get("rfId", String.class);
 
 		tokenCacheService.invalidateTokens(
 				acId,
 				rfId,
-				jwtService.authCacheTime(accessClaims));
+				jwtUtility.authCacheTime(accessClaims));
 	}
 
 }
