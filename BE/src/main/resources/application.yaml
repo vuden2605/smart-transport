@@ -33,6 +33,17 @@ spring:
     sql-migration-prefix: V
     sql-migration-separator: __
     sql-migration-suffixes: .sql
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: csc12005hr@gmail.com
+    password: lfrg lpam pjxh iiyd
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 server:
   port: 8080
@@ -76,3 +87,13 @@ cache:
   expires:
     "[user.details]": 1m
     "[auth.invalidatedTokens]": 24h
+    "[locationCache]": 24h
+    "[otp.codes]": 10m
+feign:
+  client:
+    config:
+      location-iq:
+        connectTimeout: 3000
+        readTimeout: 5000
+        baseUrl: https://us1.locationiq.com/v1/
+        apiKey: pk.d125c8c0f77b61399a16051c2ad55146
